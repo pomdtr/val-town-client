@@ -4,54 +4,6 @@
  */
 
 export interface paths {
-    "/v1/alias/{username}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["UserAlias_resolveUser"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/alias/{username}/{valName}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["UserAlias_resolveVal"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/eval": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["Eval_eval"];
-        put?: never;
-        post: operations["Eval_evalPost"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/v1/me": {
         parameters: {
             query?: never;
@@ -59,23 +11,34 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["Me_getMe"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/me/comments": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+        /** Get profile information for the current user */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["User"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
         };
-        get: operations["Comments_listComments"];
         put?: never;
         post?: never;
         delete?: never;
@@ -91,7 +54,92 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["Likes_listLikes"];
+        /** Get vals liked by the current user */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Pagination offset */
+                    offset?: components["parameters"]["offset"];
+                    /** @description Pagination limit */
+                    limit?: components["parameters"]["limit"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ValList"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/me/comments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get comments related to current user, either given or received */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Pagination offset */
+                    offset?: components["parameters"]["offset"];
+                    /** @description Pagination limit */
+                    limit?: components["parameters"]["limit"];
+                    /** @description Return comments where `createdAt > since` (non-inclusive) */
+                    since?: components["parameters"]["comments_since"];
+                    /** @description Return comments where `createdAt <= until` (inclusive) */
+                    until?: components["parameters"]["comments_until"];
+                    relationship?: components["parameters"]["relationship"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CommentList"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         put?: never;
         post?: never;
         delete?: never;
@@ -107,39 +155,43 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["References_listReferences"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/search/vals": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+        /** Returns vals that depend on any of the user's vals */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Pagination offset */
+                    offset?: components["parameters"]["offset"];
+                    /** @description Pagination limit */
+                    limit?: components["parameters"]["limit"];
+                    /** @description Return references where `referencedAt > since` (non-inclusive) */
+                    since?: components["parameters"]["references_since"];
+                    /** @description Return references where `referencedAt <= until` (inclusive) */
+                    until?: components["parameters"]["references_until"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ReferenceList"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
         };
-        get: operations["searchVals"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/users/{userId}/vals": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["listVals"];
         put?: never;
         post?: never;
         delete?: never;
@@ -155,58 +207,934 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["Vals_listVals"];
-        put: operations["Vals_editVal"];
-        post: operations["Vals_createVal"];
+        get?: never;
+        /** Create or update a val by name and code. */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            /** @description The JSON to set the val to */
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @description Name of the val */
+                        name: string;
+                        /** @description Code to run for the val */
+                        code: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["BaseVal"];
+                    };
+                };
+                /** @description Error */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** Create a new val */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            /** @description Code of the new val to be run. */
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ValInput"];
+                    "text/plain": string;
+                    "text/javascript": string;
+                    "application/javascript": string;
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FullVal"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/v1/vals/{valId}": {
+    "/v1/vals/{val_id}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["Vals_getVal"];
-        put: operations["Vals_updateVal"];
+        /** Get val by id */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description id of the val */
+                    val_id: components["parameters"]["val_id"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FullVal"];
+                    };
+                };
+                /** @description Val not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** Update a val's name or privacy */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description id of the val */
+                    val_id: components["parameters"]["val_id"];
+                };
+                cookie?: never;
+            };
+            /** @description Fields to be updated. */
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ValFields"];
+                };
+            };
+            responses: {
+                /** @description No Content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         post?: never;
-        delete: operations["Vals_deleteVal"];
+        /** Delete a val */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description id of the val */
+                    val_id: components["parameters"]["val_id"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description No Content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/v1/vals/{valId}/versions": {
+    "/v1/vals/{val_id}/versions": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["Versions_listVersions"];
+        /** List versions of a val */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Pagination offset */
+                    offset?: components["parameters"]["offset"];
+                    /** @description Pagination limit */
+                    limit?: components["parameters"]["limit"];
+                };
+                header?: never;
+                path: {
+                    /** @description id of the val */
+                    val_id: components["parameters"]["val_id"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            data?: {
+                                /**
+                                 * Format: uuid
+                                 * @description Unique identifier for the val.
+                                 */
+                                val_id?: string;
+                                /** @description Version number of the val. */
+                                version?: number;
+                                /**
+                                 * Format: date-time
+                                 * @deprecated
+                                 */
+                                runStartAt?: string | null;
+                                /**
+                                 * Format: date-time
+                                 * @deprecated
+                                 */
+                                runEndAt?: string | null;
+                            }[];
+                        } & components["schemas"]["PaginatedList"];
+                    };
+                };
+                /** @description Val not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         put?: never;
-        post: operations["Versions_createVersion"];
+        /** Create a new version of a val */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description id of the val */
+                    val_id: components["parameters"]["val_id"];
+                };
+                cookie?: never;
+            };
+            /** @description Code of the new version to be run. */
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ValInput"];
+                    "text/plain": string;
+                    "text/javascript": string;
+                    "application/javascript": string;
+                };
+            };
+            responses: {
+                /** @description Created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FullVal"];
+                    };
+                };
+                /** @description Val not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/v1/vals/{valId}/versions/{version}": {
+    "/v1/vals/{val_id}/versions/{version}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["Versions_getVersion"];
+        /** Get a specific version of a val */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description id of the val */
+                    val_id: components["parameters"]["val_id"];
+                    /** @description val version */
+                    version: components["parameters"]["version"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FullVal"];
+                    };
+                };
+                /** @description Val or version not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         put?: never;
         post?: never;
-        delete: operations["Versions_deleteVersion"];
+        /** Delete a val version */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description id of the val */
+                    val_id: components["parameters"]["val_id"];
+                    /** @description val version */
+                    version: components["parameters"]["version"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description No Content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/users/{user_id}/vals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List a user's vals */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Pagination offset */
+                    offset?: components["parameters"]["offset"];
+                    /** @description Pagination limit */
+                    limit?: components["parameters"]["limit"];
+                };
+                header?: never;
+                path: {
+                    /** @description id of the user */
+                    user_id: components["parameters"]["user_id"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ValList"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/alias/{username}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a user profile information by their username */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The username of the val owner, *not* including the `@` symbol.
+                     *      */
+                    username: components["parameters"]["username"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["User"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/alias/{username}/{val_name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a val by the author's username and val name */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The username of the val owner, *not* including the `@` symbol.
+                     *      */
+                    username: components["parameters"]["username"];
+                    /** @description The name of the val. */
+                    val_name: components["parameters"]["val_name"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FullVal"];
+                    };
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/search/vals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search for vals across the platform */
+        get: {
+            parameters: {
+                query: {
+                    /** @description Search query */
+                    query: string;
+                    /** @description Pagination offset */
+                    offset?: components["parameters"]["offset"];
+                    /** @description Pagination limit */
+                    limit?: components["parameters"]["limit"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ValList"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/eval/{expression}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Evaluate a JavaScript or TypeScript expression
+         * @description Evaluates the JavaScript or TypeScript `{expression}` and responds with the returned result.
+         *
+         *     ### Unauthenticated
+         *     Unauthenticated use will have read-only access to public vals.
+         *
+         *     ### Authenticated
+         *     Authenticated use will have read access to the authenticated user's private vals and secrets, write access to the authenticated user's vals, and the ability to send the authenticated user emails via `console.email`.
+         *
+         *     Vals generated via this API will *not* appear in the authenticated user's workspace.
+         *
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The JavaScript or TypeScript expression to be evaluated.
+                     *     This should be a single expression, like a single function
+                     *     call, assignment operation, or calculation. If you need
+                     *     to execute multiple expressions, wrap them in a function.
+                     *      */
+                    expression: components["parameters"]["expression"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: components["responses"]["ExpressionResult"];
+                /** @description Bad request or Error thrown executing user code */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/eval": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Evaluate a JavaScript or TypeScript expression
+         * @description Evaluates the JavaScript or TypeScript `{expression}` and responds with the returned result.
+         *
+         *     ### Unauthenticated
+         *     Unauthenticated use will have read-only access to public vals.
+         *
+         *     ### Authenticated
+         *     Authenticated use will have read access to the authenticated user's private vals and secrets, write access to the authenticated user's vals, and the ability to send the authenticated user emails via `console.email`.
+         *
+         *     Vals generated via this API will *not* appear in the authenticated user's workspace.
+         *
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            /** @description When used as a POST endpoint, the request body must contain the code to be run. */
+            requestBody: {
+                content: {
+                    "application/json": {
+                        code: string;
+                        args?: components["schemas"]["JSON"][];
+                    };
+                };
+            };
+            responses: {
+                200: components["responses"]["ExpressionResult"];
+                /** @description Bad request or Error thrown executing user code */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/run/{username}.{val_name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Run a val as an API
+         * @deprecated
+         * @description This endpoint runs the specified user's val and returns the output.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description The args query parameter can provide arguments to the given val. The parameter needs to be a JSON-encoded array, in which each item in the array is passed to the val as a function parameter. */
+                    args?: string;
+                };
+                header?: never;
+                path: {
+                    /** @description The username of the val owner, *not* including the `@` symbol.
+                     *      */
+                    username: components["parameters"]["username"];
+                    /** @description The name of the val. */
+                    val_name: components["parameters"]["val_name"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: components["responses"]["ExpressionResult"];
+                /** @description Bad request or Error thrown executing user code */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Run a val as an API
+         * @deprecated
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description The username of the val owner, *not* including the `@` symbol.
+                     *      */
+                    username: components["parameters"]["username"];
+                    /** @description The name of the val. */
+                    val_name: components["parameters"]["val_name"];
+                };
+                cookie?: never;
+            };
+            /** @description Provide arguments to the given val function by including a post body with your request. */
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        args?: components["schemas"]["JSON"][];
+                    };
+                };
+            };
+            responses: {
+                200: components["responses"]["ExpressionResult"];
+                /** @description Bad request or Error thrown executing user code */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Run a val as an API (as an Express handler)
+         * @description Runs `@{username}.{val_name}` as an Express handler.
+         *
+         *     `@{username}.{val_name}` must be a function. It is passed the Express [`req`](https://expressjs.com/en/4x/api.html#req) and [`res`](https://expressjs.com/en/4x/api.html#res) objects as its arguments. You can use `req` to pull out request data, and `res` to respond with any valid Express response. Learn more at the [Express docs](https://expressjs.com/en/4x/api.html).
+         *
+         *     Unlike the other two APIs, the Express API is specified via subdomain and runs at `https://{username}-{val_name}.express.val.run`.
+         *
+         *     ### Unauthenticated
+         *     Unauthenticated use will only be able to call public vals as Express handlers.
+         *
+         *     The val will be executed with `{username}`'s permissions ("API Mode"), so it will be able to read and write to `{username}`'s public and private vals, secrets, and use `console.email`.
+         *
+         *     ### Authenticated
+         *     Authenticated use is able to call private vals as Express handlers.
+         *
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Function executed successfully */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "*/*": string;
+                    };
+                };
+                /** @description Bad request or Error thrown executing user code */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Run a val as an API (as an Express handler)
+         * @description Runs `@{username}.{val_name}` as an Express handler.
+         *
+         *     `@{username}.{val_name}` must be a function. It is passed the Express [`req`](https://expressjs.com/en/4x/api.html#req) and [`res`](https://expressjs.com/en/4x/api.html#res) objects as its arguments. You can use `req` to pull out request data, and `res` to respond with any valid Express response. Learn more at the [Express docs](https://expressjs.com/en/4x/api.html).
+         *
+         *     ### Unauthenticated
+         *     Unauthenticated use will only be able to call public vals as Express handlers.
+         *
+         *     The val will be executed with `{username}`'s permissions ("API Mode"), so it will be able to read and write to `{username}`'s public and private vals, secrets, and use `console.email`.
+         *
+         *     ### Authenticated
+         *     Authenticated use is able to call private vals as Express handlers.
+         *
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            /** @description The request body will be accessible to the val Express handler under the first argument, commonly called `req`, as `req.body`.
+             *      */
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["JSON"];
+                };
+            };
+            responses: {
+                /** @description Function executed successfully */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "*/*": string;
+                    };
+                };
+                /** @description Bad request or Error thrown executing user code */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -216,710 +1144,211 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** @description Can be anything: string, number, array, object, etc., including `null` */
+        JSON: string | number | Record<string, never> | unknown[] | boolean;
+        /** @enum {string} */
+        Relationship: "received" | "given" | "any";
+        /** @enum {string} */
+        Privacy: "public" | "unlisted" | "private";
         Author: {
-            id: string;
-            username: string;
-        };
-        BaseVal: {
-            id: string;
-            author: components["schemas"]["Author"];
-            name: string;
-            code: string;
-            /** @enum {string} */
-            privacy: "public" | "unlisted" | "private";
-            version: number;
-        };
-        FullVal: {
-            readme: string;
-            likeCount: number;
-            referenceCount: number;
-        } & components["schemas"]["BaseVal"];
-        "Me.Comments.Comment": {
-            id: string;
-            author: components["schemas"]["Author"];
-            comment: string;
-            createdAt: string;
-            val: components["schemas"]["BaseVal"];
-        };
-        "Me.References.BaseValRef": {
-            id: string;
-            name: string;
-            author: components["schemas"]["Author"];
-        };
-        "Me.References.Reference": {
-            referencedAt: string;
-            reference: components["schemas"]["Me.References.BaseValRef"];
-            dependsOn: components["schemas"]["Me.References.BaseValRef"];
+            /**
+             * Format: uuid
+             * @description The user's id
+             */
+            id?: string;
+            /** @description The user's username */
+            username?: string;
         };
         User: {
-            id: string;
-            username: string;
-            bio: string;
-            profileImageUrl: string;
+            /** @description The user's bio */
+            bio?: string | null;
+            /** @description The url for the user's profile picture */
+            profileImageUrl?: string | null;
+        } & components["schemas"]["Author"];
+        BaseVal: {
+            /** Format: uuid */
+            id?: string;
+            author?: components["schemas"]["Author"];
+            name?: string;
+            code?: string;
+            /** @deprecated */
+            public?: boolean;
+            privacy?: components["schemas"]["Privacy"];
+            /** Format: int32 */
+            version?: number;
+            /**
+             * Format: date-time
+             * @deprecated
+             */
+            runEndAt?: string | null;
+            /**
+             * Format: date-time
+             * @deprecated
+             */
+            runStartAt?: string | null;
         };
-        "Vals.CreateValBody": {
-            name: string;
-            code: string;
-            /** @enum {string} */
-            privacy: "public" | "unlisted" | "private";
+        FullVal: {
+            logs?: unknown[];
+            output?: Record<string, never>;
+            exported?: Record<string, never>;
+            error?: Record<string, never>;
+            readme?: string;
+            likeCount?: number;
+            referenceCount?: number;
+        } & components["schemas"]["BaseVal"];
+        ValFields: {
+            name?: string;
+            privacy?: components["schemas"]["Privacy"];
+            readme?: string | null;
         };
-        "Vals.EditValBody": {
-            name: string;
-            code: string;
+        ValInput: {
+            code?: string;
+        } & components["schemas"]["ValFields"];
+        PaginatedList: {
+            data?: unknown[];
+            links?: {
+                /**
+                 * Format: uri
+                 * @description The URL of the current page of results
+                 */
+                self?: string;
+                /**
+                 * Format: uri
+                 * @description The URL of the next page of results
+                 */
+                next?: string;
+                /**
+                 * Format: uri
+                 * @description The URL of the previous page of results
+                 */
+                prev?: string;
+            };
+        };
+        ValList: {
+            data?: components["schemas"]["BaseVal"][];
+        } & components["schemas"]["PaginatedList"];
+        BaseValRef: {
+            /** @description The id of the val */
+            id?: string;
+            /** @description The name of the val */
+            name?: string;
+            author?: components["schemas"]["Author"];
+            /**
+             * @deprecated
+             * @description The id of the val's author
+             */
+            author_id?: string;
+            /**
+             * @deprecated
+             * @description The username of the val's author
+             */
+            username?: string;
+        };
+        ValRef: {
+            /** @deprecated */
+            public?: boolean;
+            privacy?: components["schemas"]["Privacy"];
+            /** Format: int32 */
+            version?: number;
+        } & components["schemas"]["BaseValRef"];
+        BaseRun: {
+            /** Format: uuid */
+            id?: string;
+            error?: unknown;
+            /** Format: uuid */
+            parentId?: string;
+            /**
+             * Format: date-time
+             * @deprecated
+             */
+            runEndAt?: string | null;
+            /**
+             * Format: date-time
+             * @deprecated
+             */
+            runStartAt?: string | null;
+            val?: components["schemas"]["ValRef"];
+        };
+        FullRun: {
+            emails?: unknown[];
+            logs?: unknown[];
+            returnValue?: unknown;
+            args?: unknown[];
+        } & components["schemas"]["BaseRun"];
+        RunList: {
+            data?: components["schemas"]["BaseRun"][];
+        } & components["schemas"]["PaginatedList"];
+        Comment: {
+            /** Format: uuid */
+            id?: string;
+            author?: components["schemas"]["Author"];
+            /** @description The contents of the comment */
+            comment?: string;
+            /** Format: date-time */
+            createdAt?: string;
+            val?: components["schemas"]["ValRef"];
+        };
+        Reference: {
+            /** Format: date-time */
+            referencedAt?: string;
+            reference?: components["schemas"]["BaseValRef"];
+            dependsOn?: components["schemas"]["BaseValRef"];
+        };
+        CommentList: {
+            data?: components["schemas"]["Comment"][];
+        } & components["schemas"]["PaginatedList"];
+        ReferenceList: {
+            data?: components["schemas"]["Reference"][];
+        } & components["schemas"]["PaginatedList"];
+    };
+    responses: {
+        /** @description The returned result of executing the passed expression successfully. The result can be of any JSON type. It will not include any logs that were generated during execution. */
+        ExpressionResult: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": string | number | Record<string, never> | unknown[] | boolean;
+            };
         };
     };
-    responses: never;
-    parameters: never;
+    parameters: {
+        /** @description The JavaScript or TypeScript expression to be evaluated.
+         *     This should be a single expression, like a single function
+         *     call, assignment operation, or calculation. If you need
+         *     to execute multiple expressions, wrap them in a function.
+         *      */
+        expression: string;
+        /** @description id of the user */
+        user_id: string;
+        /** @description The username of the val owner, *not* including the `@` symbol.
+         *      */
+        username: string;
+        /** @description id of the val */
+        val_id: string;
+        /** @description The name of the val. */
+        val_name: string;
+        /** @description val version */
+        version: number;
+        /** @description id of the log */
+        run_id: string;
+        /** @description Pagination offset */
+        offset: number;
+        /** @description Pagination limit */
+        limit: number;
+        /** @description Return comments where `createdAt > since` (non-inclusive) */
+        comments_since: string;
+        /** @description Return comments where `createdAt <= until` (inclusive) */
+        comments_until: string;
+        /** @description Return references where `referencedAt > since` (non-inclusive) */
+        references_since: string;
+        /** @description Return references where `referencedAt <= until` (inclusive) */
+        references_until: string;
+        relationship: components["schemas"]["Relationship"];
+    };
     requestBodies: never;
     headers: never;
     pathItems: never;
 }
 export type $defs = Record<string, never>;
-export interface operations {
-    UserAlias_resolveUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                username: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["User"];
-                };
-            };
-        };
-    };
-    UserAlias_resolveVal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                username: string;
-                valName: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FullVal"];
-                };
-            };
-        };
-    };
-    Eval_eval: {
-        parameters: {
-            query: {
-                code: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description The server could not understand the request due to invalid syntax. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Server error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    Eval_evalPost: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    code: string;
-                };
-            };
-        };
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description The server could not understand the request due to invalid syntax. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Server error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    Me_getMe: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["User"];
-                };
-            };
-            /** @description Access is unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    Comments_listComments: {
-        parameters: {
-            query?: {
-                limit?: number;
-                offset?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Me.Comments.Comment"][];
-                        links: {
-                            previous?: string;
-                            self: string;
-                            next?: string;
-                        };
-                    };
-                };
-            };
-            /** @description Access is unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    Likes_listLikes: {
-        parameters: {
-            query?: {
-                limit?: number;
-                offset?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["BaseVal"][];
-                        links: {
-                            previous?: string;
-                            self: string;
-                            next?: string;
-                        };
-                    };
-                };
-            };
-            /** @description Access is unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    References_listReferences: {
-        parameters: {
-            query?: {
-                limit?: number;
-                offset?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Me.References.Reference"][];
-                        links: {
-                            previous?: string;
-                            self: string;
-                            next?: string;
-                        };
-                    };
-                };
-            };
-            /** @description Access is unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    searchVals: {
-        parameters: {
-            query: {
-                query: string;
-                limit?: number;
-                offset?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["FullVal"][];
-                        links: {
-                            previous?: string;
-                            self: string;
-                            next?: string;
-                        };
-                    };
-                };
-            };
-        };
-    };
-    listVals: {
-        parameters: {
-            query?: {
-                limit?: number;
-                offset?: number;
-            };
-            header?: never;
-            path: {
-                userId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["FullVal"][];
-                        links: {
-                            previous?: string;
-                            self: string;
-                            next?: string;
-                        };
-                    };
-                };
-            };
-            /** @description The server cannot find the requested resource. */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    Vals_listVals: {
-        parameters: {
-            query?: {
-                limit?: number;
-                offset?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["FullVal"][];
-                        links: {
-                            previous?: string;
-                            self: string;
-                            next?: string;
-                        };
-                    };
-                };
-            };
-            /** @description Access is unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    Vals_editVal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["Vals.EditValBody"];
-            };
-        };
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FullVal"];
-                };
-            };
-            /** @description The server could not understand the request due to invalid syntax. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Access is unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    Vals_createVal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["Vals.CreateValBody"];
-            };
-        };
-        responses: {
-            /** @description The request has succeeded and a new resource has been created as a result. */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FullVal"];
-                };
-            };
-            /** @description The server could not understand the request due to invalid syntax. */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Access is unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    Vals_getVal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                valId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FullVal"];
-                };
-            };
-            /** @description The server cannot find the requested resource. */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    Vals_updateVal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                valId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    val: components["schemas"]["FullVal"];
-                };
-            };
-        };
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FullVal"];
-                };
-            };
-        };
-    };
-    Vals_deleteVal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                valId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description There is no content to send for this request, but the headers may be useful.  */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Access is unauthorized. */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": string;
-                };
-            };
-        };
-    };
-    Versions_listVersions: {
-        parameters: {
-            query?: {
-                limit?: number;
-                offset?: number;
-            };
-            header?: never;
-            path: {
-                valId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["FullVal"][];
-                        links: {
-                            previous?: string;
-                            self: string;
-                            next?: string;
-                        };
-                    };
-                };
-            };
-        };
-    };
-    Versions_createVersion: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                valId: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    val: components["schemas"]["FullVal"];
-                };
-            };
-        };
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FullVal"];
-                };
-            };
-        };
-    };
-    Versions_getVersion: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                valId: string;
-                version: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description The request has succeeded. */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FullVal"];
-                };
-            };
-        };
-    };
-    Versions_deleteVersion: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                valId: string;
-                version: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description There is no content to send for this request, but the headers may be useful.  */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-}
+export type operations = Record<string, never>;

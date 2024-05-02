@@ -10,21 +10,14 @@
     },
     "types": "dist/index.d.ts",
     "scripts": {
-        "clean": "rm -rf dist tsp-output",
-        "compile-specs": "tsp compile .",
-        "transform-specs": "openapi-typescript ./tsp-output/@typespec/openapi3/openapi.yaml -o ./src/schema.ts",
-        "compile": "npm run compile-specs && npm run transform-specs",
-        "build": "npm run clean && npm run compile && tsc",
+        "build-specs": "openapi-typescript https://www.val.town/docs/openapi.yaml -o ./src/schema.ts",
+        "build": "npm run build-specs && tsc",
         "release": "npm run build && npm publish"
     },
     "dependencies": {
         "openapi-fetch": "^0.9.5"
     },
     "devDependencies": {
-        "@typespec/compiler": "latest",
-        "@typespec/http": "latest",
-        "@typespec/openapi3": "latest",
-        "@typespec/rest": "latest",
         "openapi-typescript": "^7.0.0-next.11",
         "typescript": "^5.4.5"
     }
