@@ -1,0 +1,31 @@
+{
+    "name": "val-town-client",
+    "version": "0.2.2",
+    "type": "module",
+    "files": [
+        "dist"
+    ],
+    "exports": {
+        ".": "./dist/index.js"
+    },
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "clean": "rm -rf dist tsp-output",
+        "compile-specs": "tsp compile .",
+        "transform-specs": "openapi-typescript ./tsp-output/@typespec/openapi3/openapi.yaml -o ./src/schema.ts",
+        "compile": "npm run compile-specs && npm run transform-specs",
+        "build": "npm run clean && npm run compile && tsc",
+        "release": "npm run build && npm publish"
+    },
+    "dependencies": {
+        "openapi-fetch": "^0.9.5"
+    },
+    "devDependencies": {
+        "@typespec/compiler": "latest",
+        "@typespec/http": "latest",
+        "@typespec/openapi3": "latest",
+        "@typespec/rest": "latest",
+        "openapi-typescript": "^7.0.0-next.11",
+        "typescript": "^5.4.5"
+    }
+}
